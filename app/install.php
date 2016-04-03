@@ -65,7 +65,8 @@ $mappools = [
             'basesiege',
             'falloutbunker',
             'rebound',
-            'ctf_mapel4'
+            'ctf_mapel4',
+            'mkbase'
         ]
     ],
     'ift' => [
