@@ -1,0 +1,46 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    {% for gt,pools in results.votes %}
+    {% if loggedIn %}
+    <form action="/vote" method="post">
+        <input type="hidden" name="gametype" value="{{ gt }}" />
+    {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ gt }}
+                {% if loggedIn %}<button type="submit" class="btn btn-primary btn-xs pull-right" >Save my vote!</button>{% endif %}
+            </div>
+            <div class="panel-body">
+                {% if loggedIn %}<div class="alert alert-info">You can vote only once!</div>{% endif %}
+
+                {% for pool,maps in pools %}
+                <div class="col-xs-12 col-sm-6">
+                    <p class="lead text-center">{% if pool == 0 %}Old maps: pick 4{% else %}New maps: pick 3{% endif %}</p>
+                    {% for map in maps %}
+                    {% set perc = ((map.score * 100)/results.sum[gt][pool])|round(2) %}
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-5">
+                            <label>
+                                {% if loggedIn %}
+                                    <input type="checkbox" name="maps[{{ pool }}][]" value="{{ map.id }}" />
+                                {% endif %}
+                                {{ map.map }}
+                            </label>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-7">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ perc }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% if loggedIn %}
+    </form>
+    {% endif %}
+    {% endfor %}
+{% endblock %}

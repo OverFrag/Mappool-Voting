@@ -1,0 +1,6 @@
+app/config/hybridauth.php
+app/db.sqlite3
+app/logs/*
+vendor/
+
+!.gitkeep

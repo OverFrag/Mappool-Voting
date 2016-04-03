@@ -1,0 +1,10 @@
+<?php
+return [
+    'base_url' => 'http://domain.com/login',
+    'providers' => [
+        'Steam' => [
+            'enabled' => true,
+            'keys' => ['key' => '...']
+        ]
+    ]
+];
