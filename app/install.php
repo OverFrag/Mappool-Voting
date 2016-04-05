@@ -94,6 +94,20 @@ $mappools = [
             'Grim Dungeons',
             'Cold War'
         ]
+    ],
+    'special' => [
+        0 => [
+            'Retribution',
+            '7+'
+        ],
+        1 => [
+            'Campgrounds',
+            'Campgrounds Blue'
+        ],
+        2 => [
+            'Lost World',
+            'pro-q3dm13'
+        ]
     ]
 ];
 

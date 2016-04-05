@@ -100,7 +100,6 @@ FROM maps
 ORDER BY
     gametype ASC,
     pool ASC,
-    score DESC,
     map ASC
 SQL
         );

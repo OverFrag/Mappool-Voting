@@ -11,10 +11,12 @@ function handleVote(e) {
     var data = getFormData(e.target);
     var alert = e.target.querySelector('.alert');
 
-    if (data.maps[0].length !== 4 || data.maps[1].length !== 3) {
-        setAlertStatus(alert, 'danger', 'You have to pick 4 old maps and 3 new.')
-        button.disabled = false;
-        return;
+    if (data.gametype !== 'special') {
+        if (data.maps[0].length !== 4 || data.maps[1].length !== 3) {
+            setAlertStatus(alert, 'danger', 'You have to pick 4 old maps and 3 new.')
+            button.disabled = false;
+            return;
+        }
     }
 
     var request = new XMLHttpRequest();
@@ -27,6 +29,7 @@ function handleVote(e) {
 
             if (res.error !== undefined) {
                 setAlertStatus(alert, 'danger', res.error);
+                button.disabled = false;
             } else {
                 setAlertStatus(alert, 'success', 'Thanks for vote');
             }
@@ -64,6 +67,9 @@ function getFormData(form) {
             data.maps[0].push(form[i].value);
         } else if (name === 'maps[1][]' && form[i].checked) {
             data.maps[1].push(form[i].value);
+        } else if (name === 'maps[2][]' && form[i].checked) {
+            data.maps[2] = [];
+            data.maps[2].push(form[i].value);
         } else if (name === 'gametype') {
             data.gametype = form[i].value;
         }

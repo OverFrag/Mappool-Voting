@@ -8,33 +8,23 @@
     {% endif %}
         <div class="panel panel-default">
             <div class="panel-heading">
+                {% if gt == 'special' %}
+                Preferred map version
+                {% else %}
                 {{ gt }}
+                {% endif %}
                 {% if loggedIn %}<button type="submit" class="btn btn-primary btn-xs pull-right" >Save my vote!</button>{% endif %}
             </div>
             <div class="panel-body">
                 {% if loggedIn %}<div class="alert alert-info">You can vote only once!</div>{% endif %}
 
                 {% for pool,maps in pools %}
-                <div class="col-xs-12 col-sm-6">
-                    <p class="lead text-center">{% if pool == 0 %}Old maps: pick 4{% else %}New maps: pick 3{% endif %}</p>
-                    {% for map in maps %}
-                    {% set perc = ((map.score * 100)/results.sum[gt][pool])|round(2) %}
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-5">
-                            <label>
-                                {% if loggedIn %}
-                                    <input type="checkbox" name="maps[{{ pool }}][]" value="{{ map.id }}" />
-                                {% endif %}
-                                {{ map.map }}
-                            </label>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-7">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ perc }}%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+                <div class="col-xs-12 {% if gt != 'special' %}col-sm-6{% endif %}">
+                    {% if gt == 'special' %}
+                    {{ block('container_special') }}
+                    {% else %}
+                    {{ block('container_default') }}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -43,4 +33,52 @@
     </form>
     {% endif %}
     {% endfor %}
+{% endblock %}
+
+{% block container_default %}
+    <p class="lead text-center">{% if pool == 0 %}Old maps: pick 4{% else %}New maps: pick 3{% endif %}</p>
+    {% for map in maps %}
+        {% set perc = ((map.score * 100)/results.sum[gt][pool])|round(2) %}
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-5">
+                <label>
+                    {% if loggedIn %}
+                        {{ block('input') }}
+                    {% endif %}
+                    {{ map.map }}
+                </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-7">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ perc }}%;"></div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block container_special %}
+    {% set perc = ((maps[0].score * 100)/results.sum[gt][pool])|round(2) %}
+    <div class="row">
+        {% for map in maps %}
+            <div class="col-xs-6 col-sm-4 col-md-3 {% if loop.index != 1 %}col-sm-push-4 col-md-push-6{% endif %}">
+                <label>
+                    {% if loggedIn %}
+                        {{ block('input') }}
+                    {% endif %}
+                    {{ map.map }}
+                </label>
+            </div>
+        {% endfor %}
+        <div class="col-xs-12 col-sm-4 col-md-6 col-sm-pull-4 col-md-pull-3">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ perc }}%;"></div>
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ 100-perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ 100-perc }}%;"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block input %}
+<input type="{% if gt == 'special' %}radio{% else %}checkbox{% endif %}" name="maps[{{ pool }}][]" value="{{ map.id }}" />
 {% endblock %}
