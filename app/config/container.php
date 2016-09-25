@@ -26,12 +26,4 @@ $app['voting'] = function() use ($app) {
     return new \App\Voting($app['db']);
 };
 
-$app['vote_parser'] = function() use ($app) {
-    /** @var Symfony\Component\HttpFoundation\Request $request */
-    $votes = $app['request']->request->get('map');
-
-    foreach ($votes as $gametype => $pool) {
-
-    }
-};
 return $app;
