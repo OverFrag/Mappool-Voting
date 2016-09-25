@@ -36,6 +36,28 @@ $app->get('/', function() use ($app) {
 });
 
 $app->post('/vote', function() use ($app) {
+    $allowed = [
+        '76561197998766163',
+        '76561198013539564',
+        '76561198256149105',
+        '76561198080099318',
+        '76561198256456786',
+        '76561197969694826',
+        '76561198010106923',
+        '76561197999378686',
+        '76561198156178222',
+        '76561198158382854',
+        '76561198075963611',
+        '76561198256823272',
+        '76561198247065822',
+        '76561198239049004',
+        '76561198113074125',
+    ];
+
+    if (!in_array($app['steam']->getUserProfile()->identifier, $allowed, true)) {
+        return new JsonResponse(['error' => 'Only selected team captains can vote']);
+    }
+
     $data = $app['request']->request->get('data');
     $data = json_decode($data, true);
 
