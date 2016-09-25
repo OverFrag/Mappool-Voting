@@ -12,8 +12,8 @@ function handleVote(e) {
     var alert = e.target.querySelector('.alert');
 
     if (data.gametype !== 'special') {
-        if (data.maps[0].length !== 4 || data.maps[1].length !== 3) {
-            setAlertStatus(alert, 'danger', 'You have to pick 4 old maps and 3 new.')
+        if (data.maps[0].length !== 4) {
+            setAlertStatus(alert, 'danger', 'You have to pick 4 maps')
             button.disabled = false;
             return;
         }

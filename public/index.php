@@ -48,7 +48,7 @@ $app->post('/vote', function() use ($app) {
     }
 
     $gametypes = ['ift', 'ictf', 'special'];
-    if (!in_array($data['gametype'], $gametypes)) {
+    if (!in_array($data['gametype'], $gametypes, true)) {
         return new JsonResponse(['error' => 'Unknown gametype']);
     }
 
@@ -58,11 +58,11 @@ $app->post('/vote', function() use ($app) {
         }
     } else {
         if (count($data['maps']) !== 2 || !isset($data['maps'][0], $data['maps'][1])) {
-            return new JsonResponse(['error' =>'You have to vote on both pools']);
+            return new JsonResponse(['error' =>'Something went wrong. Sorry :(']);
         }
 
-        if (count($data['maps'][0]) !== 4 || count($data['maps'][1]) !== 3) {
-            return new JsonResponse(['error' =>'You have to vote on 4 old maps and 3 new']);
+        if (count($data['maps'][0]) !== 4) {
+            return new JsonResponse(['error' =>'You have to vote for 4 maps']);
         }
     }
 
